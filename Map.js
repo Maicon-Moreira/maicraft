@@ -5,6 +5,7 @@ class Map {
     this.blockSize = blockSize
 
     this.chunks = {}
+    this.chunksCache = {}
   }
 
   blockColors = [
@@ -25,28 +26,14 @@ class Map {
   }
 
   drawChunk(chunkX) {
-    const chunk = this.chunks[chunkX]
+    const chunkCache = this.chunksCache[chunkX]
 
-    if (chunk) {
-
-      for (let x = 0; x < this.chunkBlocksWidth; x++) {
-        for (let y = 0; y < this.chunkBlocksHeight; y++) {
-          const block = chunk[x][y]
-
-          if (block !== 0) {
-
-            const color = this.blockColors[block]
-
-            const realX = chunkX * this.chunkBlocksWidth + x
-            const realY = this.chunkBlocksHeight - y
-
-            fill(color)
-
-            drawRect(realX, realY, 1, 1)
-          }
-        }
-      }
-
+    if (chunkCache) {
+      // console.log(chunkCache)
+      const realChunkX = -camera.x * cameraZoom + chunkX * this.chunkBlocksWidth * cameraZoom
+      const realChunkY = -camera.y * cameraZoom
+      console.log(realChunkX)
+      image(chunkCache, realChunkX, realChunkY)
     }
     else {
       this.createChunk(chunkX)
@@ -80,7 +67,7 @@ class Map {
           // e se for o ultimo bloco colocar grama ou neve
           if (y + 1 > terrainHeight) {
             // se altura for maior que altura para neve colocar neve
-            if (y > 170){
+            if (y > 170) {
               block = 5
             }
             else {
@@ -95,7 +82,7 @@ class Map {
         }
 
         // se bloco for ar e for menor que altura da agua
-        if (block === 0 && y < 130){
+        if (block === 0 && y < 130) {
           block = 4
         }
 
@@ -106,6 +93,32 @@ class Map {
 
     this.chunks[chunkX] = chunk
 
-    console.log(this.chunks)
+    this.updateChunk(chunkX)
+  }
+
+  updateChunk(chunkX) {
+    const graphics = createGraphics(this.chunkBlocksWidth * cameraZoom, this.chunkBlocksHeight * cameraZoom)
+    graphics.noStroke()
+
+    const chunk = this.chunks[chunkX]
+
+    for (let x = 0; x < this.chunkBlocksWidth; x++) {
+      for (let y = 0; y < this.chunkBlocksHeight; y++) {
+        const block = chunk[x][y]
+
+        if (block !== 0) {
+
+          const color = this.blockColors[block]
+
+          const realX = x * cameraZoom
+          const realY = (this.chunkBlocksHeight - y) * cameraZoom
+
+          graphics.fill(color)
+          graphics.rect(realX, realY, 1 * cameraZoom, 1 * cameraZoom)
+        }
+      }
+    }
+
+    this.chunksCache[chunkX] = graphics
   }
 }

@@ -1,12 +1,12 @@
 const wx = innerWidth
 const wy = innerHeight
-const renderDistance = 3
+const renderDistance = 10
 
-const cameraZoom = 35
+const cameraZoom = 10
 const camera = new Camera(0, 0, cameraZoom)
 
 const playerSize = 2
-const playerWalkVelocity = 0.5
+const playerWalkVelocity = 1
 const playerJumpVelocity = 2
 const player = new Player(wx / cameraZoom / 2 - 1, wy / cameraZoom / 2 - 1, playerSize, playerWalkVelocity, playerJumpVelocity)
 
