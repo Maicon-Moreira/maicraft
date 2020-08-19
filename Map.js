@@ -32,7 +32,6 @@ class Map {
       // console.log(chunkCache)
       const realChunkX = -camera.x * cameraZoom + chunkX * this.chunkBlocksWidth * cameraZoom
       const realChunkY = -camera.y * cameraZoom
-      console.log(realChunkX)
       image(chunkCache, realChunkX, realChunkY)
     }
     else {
