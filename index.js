@@ -1,17 +1,17 @@
 const wx = innerWidth
 const wy = innerHeight
-const renderDistance = 10
+const renderDistance = 15
 
-const cameraZoom = 10
+const cameraZoom = 5
 const camera = new Camera(0, 0, cameraZoom)
 
 const playerSize = 2
-const playerWalkVelocity = 1
+const playerWalkVelocity = 2
 const playerJumpVelocity = 2
 const player = new Player(wx / cameraZoom / 2 - 1, wy / cameraZoom / 2 - 1, playerSize, playerWalkVelocity, playerJumpVelocity)
 
 const mapChunkBlocksWidth = 10
-const mapChunkBlocksHeight = 200
+const mapChunkBlocksHeight = 1000
 const mapBlockSize = 1
 const map = new Map(mapChunkBlocksWidth, mapChunkBlocksHeight, mapBlockSize)
 
@@ -20,6 +20,13 @@ function setup() {
   noStroke()
   textAlign(LEFT, TOP)
   textSize(20)
+
+  let seed = 123
+
+  const seedPrompted = prompt('Insira uma semente numérica para o mundo: (em branco = padrao = 123)')
+  if (seedPrompted) seed = seedPrompted
+
+  noiseSeed(seed)
 }
 
 function draw() {
